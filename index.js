@@ -15,7 +15,7 @@ var createTraceurPreprocessor = function(args, config, logger, helper) {
   }
 
   var transformPath = args.transformPath || config.transformPath || function(filepath) {
-    return filepath.replace(/\.es6$/, '.js');
+    return filepath.replace(/\.js$/, '.generated.js').replace(/\.es6$/, '.js');
   };
 
   return function(content, file, done) {
