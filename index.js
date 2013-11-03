@@ -46,7 +46,7 @@ var createTraceurPreprocessor = function(args, config, logger, helper) {
       compiledObjectMap = global.traceur.codegeneration.Compiler.compile(reporter, project, false);
 
       if (compiledObjectMap) {
-        if (global.traceur.options.sourceMaps) {
+        if (global.traceur.options.sourceMap) {
           writerConfig.sourceMapGenerator = new global.traceur.outputgeneration.SourceMapGenerator(sourceMapConfig);
         }
         result = global.traceur.outputgeneration.ProjectWriter.write(compiledObjectMap, writerConfig);
