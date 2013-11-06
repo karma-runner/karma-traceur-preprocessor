@@ -26,7 +26,7 @@ Following code shows the default configuration...
 module.exports = function(config) {
   config.set({
     preprocessors: {
-      'src/**/*.js': ['traceur']
+      'src/**/*.es6': ['traceur']
     },
 
     traceurPreprocessor: {
@@ -36,7 +36,7 @@ module.exports = function(config) {
       },
       // custom filename transformation function
       transformPath: function(path) {
-        return path.replace(/\.js$/, '.generated.js');
+        return path.replace(/\.es6$/, '.js');
       }
     }
   });
@@ -46,8 +46,8 @@ module.exports = function(config) {
 If you set the `sourceMap`  preprocessor option to `true` then the generated source map will be inlined as a data-uri.
 
 [Source maps][source-map-overview] allow the browser to map the generated JavaScript back to the original ES6 code. You can then set breakpoints
-in the source ES6 code instead of the generated code.  In the browser you should see two files for each source file: <name>.generated.js and <name>.js.
-The <name>.generated.js is the compiled output from Traceur and <name>.js is the original source file.
+in the source ES6 code instead of the generated code.  In the browser you should see two files for each source file: <name>.es6 and <name>.js.
+The <name>.js is the compiled output from Traceur and <name>.es6 is the original source file.
 
 ----
 
