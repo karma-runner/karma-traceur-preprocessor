@@ -17,7 +17,7 @@
   ],
   "author": "Tommy Odom <tommy.odom@gmail.com>",
   "dependencies": {
-    "traceur": "~0.0.4"
+    "traceur": "~0.0.6"
   },
   "peerDependencies": {
     "karma": ">=0.9"
