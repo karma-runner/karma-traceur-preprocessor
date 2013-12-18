@@ -17,7 +17,7 @@
   ],
   "author": "Tommy Odom <tommy.odom@gmail.com>",
   "dependencies": {
-    "traceur": "~0.0.6"
+    "traceur": "tpodom/traceur-compiler#annotations-0.0.2"
   },
   "peerDependencies": {
     "karma": ">=0.9"
