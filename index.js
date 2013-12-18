@@ -5,7 +5,8 @@ var createTraceurPreprocessor = function(args, config, logger, helper) {
 
   var log = logger.create('preprocessor.traceur');
   var defaultOptions = {
-    sourceMaps: false
+    sourceMaps: false,
+    modules: 'requirejs'
   };
   var options = helper.merge(defaultOptions, args.options || {}, config.options || {});
 
