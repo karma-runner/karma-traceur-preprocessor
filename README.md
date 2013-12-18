@@ -38,7 +38,8 @@ module.exports = function(config) {
       {pattern: 'test/**/*Spec.es6', included: false},
       'test/test-main.js'
     ],
-    
+
+    // default configuration, not required    
     traceurPreprocessor: {
       // options passed to the traceur-compiler, see traceur --longhelp for list of options
       options: {
