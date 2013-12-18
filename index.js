@@ -1,5 +1,4 @@
-require('traceur');
-var path = require('path');
+var traceur = require('traceur');
 
 var createTraceurPreprocessor = function(args, config, logger, helper) {
   config = config || {};
@@ -10,66 +9,39 @@ var createTraceurPreprocessor = function(args, config, logger, helper) {
   };
   var options = helper.merge(defaultOptions, args.options || {}, config.options || {});
 
-  for (var key in options) {
-    global.traceur.options[key] = options[key];
-  }
-
   var transformPath = args.transformPath || config.transformPath || function(filepath) {
-    return filepath.replace(/\.es6.js$/, '.js').
-        replace(/\.es6$/, '.js');
+    return filepath.replace(/\.es6.js$/, '.js').replace(/\.es6$/, '.js');
   };
 
+  // TODO(vojta): handle source maps
   return function(content, file, done) {
-    var writerConfig = {},
-        result = null,
-        project,
-        reporter,
-        compiledObjectMap,
-        map,
-        datauri,
-        sourceMapConfig;
-
     log.debug('Processing "%s".', file.originalPath);
-    log.debug('Content %s', content);
     file.path = transformPath(file.originalPath);
-    sourceMapConfig = {
-      file: path.basename(file.path)
-    };
+    options.filename = file.originalPath;
 
-    try {
-      project = new global.traceur.semantics.symbols.Project('/');
-      reporter = new global.traceur.util.ErrorReporter();
-      reporter.reportMessageInternal = function (location, format, args) {
-        throw new Error(global.traceur.util.ErrorReporter.format(location, format, args));
-      };
+    var result = traceur.compile(content, options);
 
-      project.addFile(new global.traceur.syntax.SourceFile(path.basename(file.originalPath), content));
-      compiledObjectMap = global.traceur.codegeneration.Compiler.compile(reporter, project, false);
+    result.errors.forEach(function(err) {
+      log.error(err);
+    });
 
-      if (compiledObjectMap) {
-        if (global.traceur.options.sourceMap) {
-          writerConfig.sourceMapGenerator = new global.traceur.outputgeneration.SourceMapGenerator(sourceMapConfig);
-        }
-        result = global.traceur.outputgeneration.ProjectWriter.write(compiledObjectMap, writerConfig);
-      }
-    } catch (e) {
-      log.error('%s\n  at %s', e.message, file.originalPath);
-      return;
-    }
-
-    if (writerConfig.sourceMap) {
-      map = JSON.parse(writerConfig.sourceMap);
-      datauri = 'data:application/json;charset=utf-8;base64,' + new Buffer(JSON.stringify(map)).toString('base64');
-      done(result + '\n//@ sourceMappingURL=' + datauri + '\n');
-    } else {
-      done(result);
-    }
+    return done(result.js);
   };
 };
 
 createTraceurPreprocessor.$inject = ['args', 'config.traceurPreprocessor', 'logger', 'helper'];
 
+
+var initTraceurFramework = function(files) {
+  // TODO(vojta): Traceur module should provide this path
+  files.unshift({pattern: __dirname + '/node_modules/traceur/bin/traceur-runtime.js', included: true, served: true, watched: false});
+};
+
+initTraceurFramework.$inject = ['config.files'];
+
+
 // PUBLISH DI MODULE
 module.exports = {
-  'preprocessor:traceur': ['factory', createTraceurPreprocessor]
+  'preprocessor:traceur': ['factory', createTraceurPreprocessor],
+  'framework:traceur': ['factory', initTraceurFramework]
 };
