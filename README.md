@@ -20,19 +20,30 @@ npm install karma-traceur-preprocessor --save-dev
 ```
 
 ## Configuration
-Following code shows the default configuration...
+The following example configuration shows some of the required settings for enabling Traceur support.  Traceur compiles source files into either requirejs or nodejs modules.  Since Karma is testing in a browser you need to [configure RequireJS][configure-requirejs].
+
 ```js
 // karma.conf.js
 module.exports = function(config) {
   config.set({
+    // at a minimum need requirejs + traceur
+    frameworks: ['jasmine', 'requirejs', 'traceur'],
+    
     preprocessors: {
       'src/**/*.es6': ['traceur']
     },
 
+    files: [
+      {pattern: 'src/**/*.es6', included: false},
+      {pattern: 'test/**/*Spec.es6', included: false},
+      'test/test-main.js'
+    ],
+    
     traceurPreprocessor: {
       // options passed to the traceur-compiler, see traceur --longhelp for list of options
       options: {
-        sourceMap: false
+        sourceMap: false, // not currently supported
+        modules: 'requirejs'
       },
       // custom filename transformation function
       transformPath: function(path) {
@@ -43,6 +54,7 @@ module.exports = function(config) {
 };
 ```
 
+# Not currently supported
 If you set the `sourceMap`  preprocessor option to `true` then the generated source map will be inlined as a data-uri.
 
 [Source maps][source-map-overview] allow the browser to map the generated JavaScript back to the original ES6 code. You can then set breakpoints
@@ -60,3 +72,4 @@ For an example of a project configured to test ES6 code check out [karma-traceur
 [traceur-compiler]: https://github.com/google/traceur-compiler
 [karma-traceur-test]: https://github.com/tpodom/karma-traceur-test
 [source-map-overview]: https://hacks.mozilla.org/2013/05/compiling-to-javascript-and-debugging-with-source-maps/
+[configure-requirejs]: http://karma-runner.github.io/0.10/plus/requirejs.html
