@@ -26,9 +26,14 @@ var createTraceurPreprocessor = function(args, config, logger, helper) {
       log.error(err);
     });
 
+    // TODO(vojta): Tracer should return JS object, rather than a string.
     if (result.sourceMap) {
+      var map = JSON.parse(result.sourceMap);
+      map.file = file.path;
       transpiledContent += '\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,';
-      transpiledContent += new Buffer(result.sourceMap).toString('base64') + '\n';
+      transpiledContent += new Buffer(JSON.stringify(map)).toString('base64') + '\n';
+
+      file.sourceMap = map
     }
 
     return done(transpiledContent);
