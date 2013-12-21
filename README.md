@@ -55,7 +55,7 @@ module.exports = function(config) {
 };
 ```
 
-# Not currently supported
+# Source Maps
 If you set the `sourceMap`  preprocessor option to `true` then the generated source map will be inlined as a data-uri.
 
 [Source maps][source-map-overview] allow the browser to map the generated JavaScript back to the original ES6 code. You can then set breakpoints
