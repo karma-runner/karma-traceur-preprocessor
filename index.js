@@ -5,7 +5,7 @@ var createTraceurPreprocessor = function(args, config, logger, helper) {
 
   var log = logger.create('preprocessor.traceur');
   var defaultOptions = {
-    sourceMaps: false,
+    sourceMap: false,
     modules: 'requirejs'
   };
   var options = helper.merge(defaultOptions, args.options || {}, config.options || {});
@@ -14,19 +14,24 @@ var createTraceurPreprocessor = function(args, config, logger, helper) {
     return filepath.replace(/\.es6.js$/, '.js').replace(/\.es6$/, '.js');
   };
 
-  // TODO(vojta): handle source maps
   return function(content, file, done) {
     log.debug('Processing "%s".', file.originalPath);
     file.path = transformPath(file.originalPath);
     options.filename = file.originalPath;
 
     var result = traceur.compile(content, options);
+    var transpiledContent = result.js;
 
     result.errors.forEach(function(err) {
       log.error(err);
     });
 
-    return done(result.js);
+    if (result.sourceMap) {
+      transpiledContent += '\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,';
+      transpiledContent += new Buffer(result.sourceMap).toString('base64') + '\n';
+    }
+
+    return done(transpiledContent);
   };
 };
 
