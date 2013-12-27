@@ -17,7 +17,7 @@
   ],
   "author": "Tommy Odom <tommy.odom@gmail.com>",
   "dependencies": {
-    "traceur": "git://github.com/tpodom/traceur-compiler#annotations-0.0.2"
+    "traceur": "git://github.com/vojtajina/traceur-compiler#nodejs-api-support-sourcemaps-with-annotations"
   },
   "peerDependencies": {
     "karma": ">=0.9"
