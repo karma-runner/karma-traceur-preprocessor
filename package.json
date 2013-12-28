@@ -20,7 +20,7 @@
     "traceur": "git://github.com/vojtajina/traceur-compiler#nodejs-api-support-sourcemaps-with-annotations"
   },
   "peerDependencies": {
-    "karma": ">=0.9"
+    "karma": ">=0.11.14"
   },
   "license": "MIT",
   "devDependencies": {

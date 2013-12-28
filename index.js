@@ -26,6 +26,10 @@ var createTraceurPreprocessor = function(args, config, logger, helper) {
       log.error(err);
     });
 
+    if (result.errors.length) {
+      return done(new Error('TRACEUR COMPILE ERROR'));
+    }
+
     // TODO(vojta): Tracer should return JS object, rather than a string.
     if (result.sourceMap) {
       var map = JSON.parse(result.sourceMap);
@@ -36,7 +40,7 @@ var createTraceurPreprocessor = function(args, config, logger, helper) {
       file.sourceMap = map
     }
 
-    return done(transpiledContent);
+    return done(null, transpiledContent);
   };
 };
 
