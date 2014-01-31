@@ -6,7 +6,7 @@ var createTraceurPreprocessor = function(args, config, logger, helper) {
   var log = logger.create('preprocessor.traceur');
   var defaultOptions = {
     sourceMap: false,
-    modules: 'requirejs'
+    modules: 'amd'
   };
   var options = helper.merge(defaultOptions, args.options || {}, config.options || {});
 
@@ -48,8 +48,7 @@ createTraceurPreprocessor.$inject = ['args', 'config.traceurPreprocessor', 'logg
 
 
 var initTraceurFramework = function(files) {
-  // TODO(vojta): Traceur module should provide this path
-  files.unshift({pattern: __dirname + '/node_modules/traceur/bin/traceur-runtime.js', included: true, served: true, watched: false});
+  files.unshift({pattern: traceur.RUNTIME_PATH, included: true, served: true, watched: false});
 };
 
 initTraceurFramework.$inject = ['config.files'];
