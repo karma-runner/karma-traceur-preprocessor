@@ -30,7 +30,7 @@
     "grunt-auto-release": "~0.0.2"
   },
   "contributors": [
-    "Tommy Odom <tommy.odom@gmail.com>",
-    "Vojta Jina <vojta.jina@gmail.com>"
+    "Vojta Jina <vojta.jina@gmail.com>",
+    "Tommy Odom <tommy.odom@gmail.com>"
   ]
 }
