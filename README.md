@@ -44,7 +44,7 @@ module.exports = function(config) {
       // options passed to the traceur-compiler, see traceur --longhelp for list of options
       options: {
         sourceMap: false,
-        modules: 'requirejs'
+        modules: 'amd'
       },
       // custom filename transformation function
       transformPath: function(path) {
