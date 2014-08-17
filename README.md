@@ -43,7 +43,7 @@ module.exports = function(config) {
     traceurPreprocessor: {
       // options passed to the traceur-compiler, see traceur --longhelp for list of options
       options: {
-        sourceMap: false,
+        sourceMaps: false,
         modules: 'requirejs'
       },
       // custom filename transformation function
