@@ -55,10 +55,14 @@ module.exports = function(config) {
 };
 ```
 
-# Source Maps
+## Source Maps
 If you set the `sourceMaps`  preprocessor option to `true` then the generated source map will be inlined as a data-uri.
 
 [Source maps][source-map-overview] allow the browser to map the generated JavaScript back to the original ES6 code. You can then set breakpoints in the source ES6 code instead of the generated code.  In the browser you should see two files for each source file: <name>.es6 and <name>.js. The <name>.js is the compiled output from Traceur and <name>.es6 is the original source file.
+
+## Supported Karma Launchers
+
+Traceur is an ES6 to ES5 transpiler, and as such, does not support older browsers without ES5 support like IE8 or PhantomJS. (This is the case for any Traceur-compiled code, not just that produced by karma-traceur-preprocessor.)
 
 ----
 
