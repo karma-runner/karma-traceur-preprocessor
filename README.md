@@ -41,7 +41,8 @@ module.exports = function(config) {
 
     // default configuration, not required
     traceurPreprocessor: {
-      // options passed to the traceur-compiler, see traceur --longhelp for list of options
+      // options passed to the traceur-compiler
+      // see traceur --longhelp for list of options
       options: {
         sourceMaps: false,
         modules: 'amd'
