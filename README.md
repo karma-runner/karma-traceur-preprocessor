@@ -4,18 +4,10 @@
 
 ## Installation
 
-Add `karma-traceur-preprocessor` as a devDependency in your `package.json`.
-```json
-{
-  "devDependencies": {
-    "karma": "~0.10",
-    "karma-traceur-preprocessor": "~0.2"
-  }
-}
-```
+Install `karma-traceur-preprocessor` as a devDependency for your project:
 
-Or you can manually install it:
 ```bash
+npm install karma --save-dev
 npm install karma-traceur-preprocessor --save-dev
 ```
 
