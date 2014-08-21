@@ -27,7 +27,7 @@ var createTraceurPreprocessor = function(args, config, logger, helper) {
     });
 
     if (result.errors.length) {
-      return done(new Error('TRACEUR COMPILE ERROR'));
+      return done(new Error('TRACEUR COMPILE ERRORS\n' + result.errors.join('\n')));
     }
 
     // TODO(vojta): Tracer should return JS object, rather than a string.
