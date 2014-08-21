@@ -9,7 +9,7 @@ Add `karma-traceur-preprocessor` as a devDependency in your `package.json`.
 {
   "devDependencies": {
     "karma": "~0.10",
-    "karma-traceur-preprocessor": "~0.1"
+    "karma-traceur-preprocessor": "~0.2"
   }
 }
 ```
@@ -20,7 +20,7 @@ npm install karma-traceur-preprocessor --save-dev
 ```
 
 ## Configuration
-The following example configuration shows some of the required settings for enabling Traceur support.  Traceur compiles source files into either requirejs or nodejs modules.  Since Karma is testing in a browser you need to [configure RequireJS][configure-requirejs].
+The following example configuration shows some of the required settings for enabling Traceur support.  Traceur compiles source files into either AMD or Node.js modules.  Since Karma is testing in a browser you need to [configure RequireJS][configure-requirejs].
 
 ```js
 // karma.conf.js
@@ -28,7 +28,7 @@ module.exports = function(config) {
   config.set({
     // at a minimum need requirejs + traceur
     frameworks: ['jasmine', 'requirejs', 'traceur'],
-    
+
     preprocessors: {
       'src/**/*.es6': ['traceur']
     },
@@ -39,12 +39,12 @@ module.exports = function(config) {
       'test/test-main.js'
     ],
 
-    // default configuration, not required    
+    // default configuration, not required
     traceurPreprocessor: {
       // options passed to the traceur-compiler, see traceur --longhelp for list of options
       options: {
         sourceMaps: false,
-        modules: 'requirejs'
+        modules: 'amd'
       },
       // custom filename transformation function
       transformPath: function(path) {
@@ -56,15 +56,13 @@ module.exports = function(config) {
 ```
 
 # Source Maps
-If you set the `sourceMap`  preprocessor option to `true` then the generated source map will be inlined as a data-uri.
+If you set the `sourceMaps`  preprocessor option to `true` then the generated source map will be inlined as a data-uri.
 
-[Source maps][source-map-overview] allow the browser to map the generated JavaScript back to the original ES6 code. You can then set breakpoints
-in the source ES6 code instead of the generated code.  In the browser you should see two files for each source file: <name>.es6 and <name>.js.
-The <name>.js is the compiled output from Traceur and <name>.es6 is the original source file.
+[Source maps][source-map-overview] allow the browser to map the generated JavaScript back to the original ES6 code. You can then set breakpoints in the source ES6 code instead of the generated code.  In the browser you should see two files for each source file: <name>.es6 and <name>.js. The <name>.js is the compiled output from Traceur and <name>.es6 is the original source file.
 
 ----
 
-For more information on Karma see the [homepage].  
+For more information on Karma see the [homepage].
 
 For an example of a project configured to test ES6 code check out [karma-traceur-test].
 
