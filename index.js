@@ -17,29 +17,24 @@ var createTraceurPreprocessor = function(args, config, logger, helper) {
   return function(content, file, done) {
     log.debug('Processing "%s".', file.originalPath);
     file.path = transformPath(file.originalPath);
-    options.filename = file.originalPath;
+    var filename = file.originalPath;
+    var transpiledContent;
+    var compiler = new traceur.NodeCompiler(options);
 
-    var result = traceur.compile(content, options);
-    var transpiledContent = result.js;
-
-    result.errors.forEach(function(err) {
-      log.error(err);
-    });
-
-    if (result.errors.length) {
-      return done(new Error('TRACEUR COMPILE ERRORS\n' + result.errors.join('\n')));
+    try {
+      transpiledContent = compiler.compile(content, filename);
+    } catch (e) {
+      log.error(e);
+      done(new Error('TRACEUR COMPILE ERROR\n', e.toString()));
     }
 
-    // TODO(vojta): Tracer should return JS object, rather than a string.
-    if (result.generatedSourceMap) {
-      var map = JSON.parse(result.generatedSourceMap);
+    if (compiler.getSourceMap() !== undefined) {
+      var map = JSON.parse(compiler.getSourceMap());
       map.file = file.path;
       transpiledContent += '\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,';
       transpiledContent += new Buffer(JSON.stringify(map)).toString('base64') + '\n';
-
       file.sourceMap = map;
     }
-
     return done(null, transpiledContent);
   };
 };
