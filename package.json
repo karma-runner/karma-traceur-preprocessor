@@ -1,6 +1,6 @@
 {
   "name": "karma-traceur-preprocessor",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A Karma plugin. Compile ES6 script on the fly using traceur-compiler.",
   "main": "index.js",
   "scripts": {
