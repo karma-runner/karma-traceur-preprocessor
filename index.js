@@ -1,6 +1,6 @@
 var traceur = require('traceur');
 
-var createTraceurPreprocessor = function(args, config, logger, helper) {
+var createTraceurPreprocessor = function(args, config, logger, helper, basePath) {
   config = config || {};
 
   var log = logger.create('preprocessor.traceur');
@@ -8,20 +8,24 @@ var createTraceurPreprocessor = function(args, config, logger, helper) {
     sourceMaps: false,
     modules: 'amd'
   };
-  var options = helper.merge(defaultOptions, args.options || {}, config.options || {});
 
   var transformPath = args.transformPath || config.transformPath || function(filepath) {
     return filepath.replace(/\.es6.js$/, '.js').replace(/\.es6$/, '.js');
   };
 
   return function(content, file, done) {
+    var relativePath = file.originalPath.replace(basePath + '/', '');
+    var moduleName = relativePath.replace(/.js$/, '');
+
     log.debug('Processing "%s".', file.originalPath);
     file.path = transformPath(file.originalPath);
     // options.filename = file.originalPath;
+    var options = helper.merge(defaultOptions, args.options || {}, config.options || {});
+    options.moduleName = moduleName;    
 
     var transpiledContent;
     try {
-      transpiledContent = traceur.compile(content, options, file.originalPath);
+      transpiledContent = new traceur.Compiler(options).compile(content, file.originalPath);
     } catch(error) {
       log.error(error);
       return done(new Error('TRACEUR COMPILE ERRORS\n' + error.join('\n')));
@@ -41,7 +45,13 @@ var createTraceurPreprocessor = function(args, config, logger, helper) {
   };
 };
 
-createTraceurPreprocessor.$inject = ['args', 'config.traceurPreprocessor', 'logger', 'helper'];
+createTraceurPreprocessor.$inject = [
+  'args',
+  'config.traceurPreprocessor',
+  'logger',
+  'helper',
+  'config.basePath'
+];
 
 
 var initTraceurFramework = function(files) {
