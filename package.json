@@ -3,17 +3,12 @@
   "version": "0.3.1",
   "description": "A Karma plugin. Compile ES6 script on the fly using traceur-compiler.",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/karma-runner/karma-traceur-preprocessor.git"
-  },
+  "repository": "karma-runner/karma-traceur-preprocessor",
   "keywords": [
     "karma-plugin",
     "karma-preprocessor",
-    "traceur"
+    "traceur",
+    "es6"
   ],
   "author": "Tommy Odom <tommy.odom@gmail.com>",
   "peerDependencies": {
