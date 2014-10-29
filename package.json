@@ -18,7 +18,7 @@
   "author": "Tommy Odom <tommy.odom@gmail.com>",
   "peerDependencies": {
     "karma": ">=0.11.14",
-    "traceur": ">=0.0.51"
+    "traceur": "~0.0.72"
   },
   "license": "MIT",
   "devDependencies": {
