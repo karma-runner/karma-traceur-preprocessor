@@ -14,12 +14,21 @@ var createTraceurPreprocessor = function(args, config, logger, helper) {
     return filepath.replace(/\.es6.js$/, '.js').replace(/\.es6$/, '.js');
   };
 
+  var transformModuleName = args.transformModuleName || config.transformModuleName;
+
   return function(content, file, done) {
     log.debug('Processing "%s".', file.originalPath);
     file.path = transformPath(file.originalPath);
     var filename = file.originalPath;
+    var duplicatedOptions = helper.merge({ }, options);
+
+    if (transformModuleName) {
+      // Set the name of the module for this file
+      duplicatedOptions.moduleName = transformModuleName(file.originalPath, file.path);
+    }
+
     var transpiledContent;
-    var compiler = new traceur.NodeCompiler(options);
+    var compiler = new traceur.NodeCompiler(duplicatedOptions);
 
     try {
       transpiledContent = compiler.compile(content, filename);
