@@ -23,19 +23,20 @@ var createTraceurPreprocessor = function(args, config, logger, helper) {
 
     try {
       transpiledContent = compiler.compile(content, filename);
+
+      if (compiler.getSourceMap() !== undefined) {
+        var map = JSON.parse(compiler.getSourceMap());
+        map.file = file.path;
+        transpiledContent += '\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,';
+        transpiledContent += new Buffer(JSON.stringify(map)).toString('base64') + '\n';
+        file.sourceMap = map;
+      }
+
+      done(null, transpiledContent);
     } catch (e) {
       log.error(e);
       done(new Error('TRACEUR COMPILE ERROR\n', e.toString()));
     }
-
-    if (compiler.getSourceMap() !== undefined) {
-      var map = JSON.parse(compiler.getSourceMap());
-      map.file = file.path;
-      transpiledContent += '\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,';
-      transpiledContent += new Buffer(JSON.stringify(map)).toString('base64') + '\n';
-      file.sourceMap = map;
-    }
-    return done(null, transpiledContent);
   };
 };
 
